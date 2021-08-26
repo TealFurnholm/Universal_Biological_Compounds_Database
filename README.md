@@ -11,12 +11,7 @@ These databases span all kingdoms of life. The databases allow the simultaneous 
 The databases are used for (meta)transcriptomics, (meta)proteomics, metabolomics, metagenomics, and for novel binning and MAG quality control software I've created. This way many types of data can be combined into a secondary analysis, with taxonomy and functions being directly linked. It also covers both the protein and the non-coding fraction of sequencing. 
 
 ## One Manual Input: BioCyc
-For the most part, this script is automated - except the BioCyc collection. You'll need to request a license to download their flat files. 
-<br> They will give you a username, password, and link to the download site - you'll be asked to asked to provide these for downloading the files.
-<br> Your options: (see the Wiki for how to)<p> 
-1. run the indicated scripts that split the biocyc collection, and then run these splits on multiple shells, OR
-2. just run the main script, which will also download the collection, but will take 3-4 days to finish.
-
+For the most part, this script is automated - except the BioCyc collection. You'll need to request a license to download their flat files. They will give you a username, password, and link to the download site - you'll be asked to asked to provide these for downloading the files. Since BioCyc files are huge and many, you can (optionally) split up the files and download splits on multiple shells to speed things up.
 
 ## Automation
 This script automatically pulls in all the remaining data it needs off the various public repositories.
