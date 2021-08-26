@@ -10,15 +10,13 @@ This is the second of a series of scripts that create/curate vital reference dat
 These databases span all kingdoms of life. The databases allow the simultaneous identification of microbial community phylogeny and functions. All the biological molecules/compounds and their data are linked to their enzymes and transporters to map the flow of metabolites in microbe-microbe or microbe-host interactions. 
 The databases are used for (meta)transcriptomics, (meta)proteomics, metabolomics, metagenomics, and for novel binning and MAG quality control software I've created. This way many types of data can be combined into a secondary analysis, with taxonomy and functions being directly linked. It also covers both the protein and the non-coding fraction of sequencing. 
 
-## A Manual Input: BioCyc
-For the most part, this script is automated - except the BioCyc collection. First you'll need to request a license to download their flat files.
-<br> At the minimum you need the MetaCyc flat files: (you have to enter a user name and password)
- - wget -N --no-check-certificate --user= --password= http://brg-files.ai.sri.com/public/dist/meta.tar.gz <p>
-Then, if you want to be thorough and get really decent annotation rates, try getting the BioCyc flat files too. 
-<br> This bloody file is huge (takes days to download) and has repeatedly been borked (BioCyc archiving issue)
- - wget -N --no-check-certificate --user= --password=  http://brg-files.ai.sri.com/public/dist/biocyc-flatfiles.tar.gz
-     - if the server gives out or your download is disrupted, add a -c to the wget command
-     - I do include a MetaCyc file retrieval inside the script - follow the prompts - thi
+## One Manual Input: BioCyc
+For the most part, this script is automated - except the BioCyc collection. You'll need to request a license to download their flat files. 
+<br> They will give you a username, password, and link to the download site - you'll be asked to asked to provide these for downloading the files.
+<br> Your options: (see the Wiki for how to)<p> 
+1. run the indicated scripts that split the biocyc collection, and then run these splits on multiple shells, OR
+2. just run the main script, which will also download the collection, but will take 3-4 days to finish.
+
 
 ## Automation
 This script automatically pulls in all the remaining data it needs off the various public repositories.
