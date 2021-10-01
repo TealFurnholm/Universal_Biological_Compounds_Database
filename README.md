@@ -1,9 +1,9 @@
-# Universal_Biological_Functions_Database
+# Universal_Biological_Compounds_Database
 This script compiles and links biological reactions and compound information from across multiple public repositories. 
 This is #2 of a series of pipelines that create-curate a Universal Reference for various 'omics data.
     <br>1. Universal Taxonomy Database: [found here](https://github.com/TealFurnholm/Universal-Taxonomy-Database)
     <br>2. Universal Compounds Database: *this repository*
-    <br>3. Universal Reactions Database: [found here](https://github.com/TealFurnholm/Universal_Biological_Reactions_Database)
+    <br>3. Universal Reactions Database: *this repository*
     <br>4. Universal Protein Alignment Database: [found here](https://github.com/TealFurnholm/Universal_Microbiomics_Alignment_Database)
     <br>5. Universal ncRNA Alignment Database: [found here](https://github.com/TealFurnholm/Fix_RNACentral_Taxonomy)
 
