@@ -2,9 +2,10 @@
 This script compiles and links biological reactions and compound information from across multiple public repositories. 
 This is #2 of a series of pipelines that create-curate a Universal Reference for various 'omics data.
     <br>1. Universal Taxonomy Database: [found here](https://github.com/TealFurnholm/Universal-Taxonomy-Database)
-    <br>2. Universal Functions Database: *this repository*
-    <br>3. Universal Protein Alignment Database: [found here](https://github.com/TealFurnholm/Universal_Microbiomics_Alignment_Database)
-    <br>4. Universal ncRNA Alignment Database: [found here](https://github.com/TealFurnholm/Fix_RNACentral_Taxonomy)
+    <br>2. Universal Compounds Database: *this repository*
+    <br>3. Universal Reactions Database: [found here](https://github.com/TealFurnholm/Universal_Biological_Reactions_Database)
+    <br>4. Universal Protein Alignment Database: [found here](https://github.com/TealFurnholm/Universal_Microbiomics_Alignment_Database)
+    <br>5. Universal ncRNA Alignment Database: [found here](https://github.com/TealFurnholm/Fix_RNACentral_Taxonomy)
 
 ## How Universal?
 These databases span all kingdoms of life. The databases allow the simultaneous identification of microbial community phylogeny and functions. All the biological molecules/compounds and their data are linked to their enzymes and transporters to map the flow of metabolites in microbe-microbe or microbe-host interactions. 
