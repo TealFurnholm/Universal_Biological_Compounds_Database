@@ -1,5 +1,13 @@
-#use warnings;
+use warnings;
+$time = localtime;
+$time = uc($time);
+$time =~ /^[A-Z]+\s+([A-Z]+)\s+\S+\s+\S+\s+(\d\d\d\d)/;
+$month = $1; $year = $2;
+$version=$1."_".$2;
 
+
+
+qx{wget -N https://ftp.ncbi.nlm.nih.gov/pub/COG/KOG/kog};
 qx{wget -N http://current.geneontology.org/ontology/go.obo};
 qx{wget -N https://ftp.expasy.org/databases/enzyme/enzyme.dat};
 qx{wget -N https://ftp.ebi.ac.uk/pub/databases/interpro/entry.list};
@@ -9,6 +17,7 @@ qx{wget -N https://ftp.ncbi.nlm.nih.gov/hmm/current/hmm_PGAP.tsv};
 $keggrxns  = `wget -q -O - http://rest.kegg.jp/list/reaction`;
 
 
+
 open(INGO, "go.obo")||die;
 while(<INGO>){
         if($_!~/\w/){next;}
@@ -16,7 +25,7 @@ while(<INGO>){
         $_=~s/[\r\n]+//;
         @stuff=split("\t",$_);
         if($_=~/^ID\:\s+(GO.\d+)/){$inrn=1; @IDS=(); push(@IDS,$1); $name='';}
-        if($inrn==1 && $_=~/^name.\s+(\w.+)/){$name=CleanNames($1);}
+        if($inrn==1 && $_=~/^NAME.\s+(\w.+)/){$name=CleanNames($1);}
         if($inrn==1 && $_=~/^ALT_ID.\s+(GO.\d+)/){push(@IDS,$1);}
         if($_=~/\[TERM\]/){
                 $inrn=0;
@@ -28,6 +37,18 @@ while(<INGO>){
                 }
         }
 }
+
+open(INKOG, "kog")||die;
+while(<INKOG>){
+        if($_!~/^\[\w/){next;}
+        $_=uc($_);
+        $_=~s/[\r\n]+//;
+        if($_=~/^\[([A-Z]+)\]\s+(KOG\d+)\W+(\w.*)/){
+                $rn=$2;
+                $name=CleanNames($3);
+                $name=$1.";".$name;
+                if($name =~ /\w/){$FUNCTION_NAMES{$rn}=$name;}
+}       }
 
 open(INEC, "enzyme.dat")||die;
 while(<INEC>){
@@ -107,7 +128,7 @@ foreach my $x (@KEGGCD){
         $FUNCTION_NAMES{$rn}=$name;
 }
 
-open(OUTPUT, ">", "Function_Names.txt")||die;
+open(OUTPUT, ">", "Function_Names_".$version.".txt")||die;
 foreach my $func (keys %FUNCTION_NAMES){
         $name = $FUNCTION_NAMES{$func};
         print OUTPUT "$func\t$name\n";
