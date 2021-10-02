@@ -1,4 +1,4 @@
-# Universal_Biological_Compounds_And_Reactions_Database
+## Universal_Biological_Compounds_And_Reactions_Database
 This script compiles and links biological reactions and compound information from across multiple public repositories. 
 This is #2 of a series of pipelines that create-curate a Universal Reference for various 'omics data.
     <br>1. Universal Taxonomy Database: [found here](https://github.com/TealFurnholm/Universal-Taxonomy-Database)
