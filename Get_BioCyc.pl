@@ -1,3 +1,9 @@
+if($ARGV[0]!~/\w/){
+        print "Please specify your biocyc licence email for user id, distribution password (not biocyc login password!) and biocyc file list.\n";
+        print "ex. perl Get_BioCyc.pl pwd=data-12345 usr=biocyc-flatfiles in=biocyc_files.txt \n";
+        print "See GitHub for details: https://github.com/TealFurnholm/Universal_Biological_Compounds_Database/wiki \n";
+}
+
 print "GETTING ALL INPUT FILES\n";
 qx{mkdir BIOCYC_NF};
 
@@ -6,6 +12,7 @@ $argv =~ /pwd[\s\=]+(\S+)/;     $pwd=$1;
 $argv =~ /usr[\s\=]+(\S+)/;     $usr=$1;
 $argv =~ /in[\s\=]+(\S+)/;      $inf=$1;
 open(INFILE, $inf)||die "unable to open biocyc files $inf: $!\n";
+
 
 while(<INFILE>){
         if($_ !~/\w/){next;}
@@ -40,4 +47,9 @@ while(<INFILE>){
         if($on%10==0){$time=localtime; print "on $on time $time file $file\n";}
         $on++;
 }
+
+
+
+
+
 
