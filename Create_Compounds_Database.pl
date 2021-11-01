@@ -23,7 +23,6 @@ qx{wget -O PubChem_substance_text_biocyc_summary.csv 'https://pubchem.ncbi.nlm.n
 qx{wget -O PubChem_substance_text_hmdb_summary.csv 'https://pubchem.ncbi.nlm.nih.gov/sdq/sdqagent.cgi?infmt=json&outfmt=csv&query={%22download%22:%22*%22,%22collection%22:%22substance%22,%22where%22:{%22ands%22:[{%22*%22:%22hmdb%22}]},%22order%22:[%22relevancescore,desc%22],%22start%22:1,%22limit%22:10000000,%22downloadfilename%22:%22PubChem_substance_text_hmdb%22}'};
 qx{wget -O PubChem_substance_text_kegg_summary.csv 'https://pubchem.ncbi.nlm.nih.gov/sdq/sdqagent.cgi?infmt=json&outfmt=csv&query={%22download%22:%22*%22,%22collection%22:%22substance%22,%22where%22:{%22ands%22:[{%22*%22:%22kegg%22}]},%22order%22:[%22relevancescore,desc%22],%22start%22:1,%22limit%22:10000000,%22downloadfilename%22:%22PubChem_substance_text_kegg%22}'};
 qx{wget -N https://ftp.ebi.ac.uk/pub/databases/chebi/ontology/chebi.owl};
-qx{wget -N https://ftp.ebi.ac.uk/pub/databases/chebi/Flat_file_tab_delimited/names.tsv.gz}; qx{gunzip -f names.tsv.gz};
 $keggcpd  = `wget -q -O - http://rest.kegg.jp/list/compound`;
 ################################################
 ################################################
@@ -222,7 +221,73 @@ while(<INCHEB>){
                 next;
 }       }
 
-print "INPUT CHEBI names.tsv\n";
+print "INPUT CHEBI names\n";
+$start=147;
+$count=0;
+while($count <=10){
+        $count++;
+        $file='https://ftp.ebi.ac.uk/pub/databases/chebi/archive/rel'.$start.'/Flat_file_tab_delimited/names.tsv.gz';
+        qx{wget -O names.tsv.gz $file};
+        qx{gunzip -f names.tsv.gz};
+        open(INCPDNM, "names.tsv")||last;
+        while(<INCPDNM>){
+                if($_!~/\w/){next;}
+                $_=uc($_);
+                $_=~s/[\r\n]+//;
+                @stuff=split("\t", $_);
+                $cpd="CHEBI:".$stuff[1];
+                $name=CleanNames($stuff[4]);
+                @PARTS = split("_", $name);
+                $mp=0; $mn='';
+                foreach $p (@PARTS){ $p=~/([A-Z]+)/; if(length($1)>$mp){ $mp=length($1); $mn=$1; }}
+                $CPD_NODD{$cpd}{$name}=@PARTS;
+                $CPD_NLEN{$cpd}{$name}=length($mn);
+        }
+        $kc=keys %CPD_NODD;
+        print "on count $count start $start kc $kc\n";
+        $start+=12;
+        qx{rm names.tsv.gz};
+        qx{rm names.tsv};
+}
+if(keys %CPD_NODD < 1){ 
+        $file='https://ftp.ebi.ac.uk/pub/databases/chebi/archive/rel'.$start.'/Flat_file_tab_delimited/names.tsv.gz';
+        print "issue with chebi names.tsv file path $file, go to chebi and get correct path and fix in script.\n"; die; 
+}
+foreach my $cpd (sort(keys %CPD_NODD)){
+        #FIRST CHECK FOR NAMES >= 7 CHARACTER STRINGS
+        #SORT BY INCREASING NON-WORDS
+        $mxo=10000; $mxl=0; $goodname='';
+        foreach my $name (sort{$CPD_NODD{$cpd}{$a}<=>$CPD_NODD{$cpd}{$b}} keys %{$CPD_NODD{$cpd}}){
+                $odd = $CPD_NODD{$cpd}{$name};
+                $len = $CPD_NLEN{$cpd}{$name};
+                if($len < 7){next;}
+                #NOW LOOK FOR NAME WITH LONGEST DESCRIPTOR
+                if($odd < $mxo){ $mxo=$odd; }
+                if($odd <= $mxo+1 ){
+                        if($len > $mxl){$mxl=$len; $goodname=$name;}
+                }
+        }
+
+        #GET LONGEST NAME REGARDLESS OF ODD IF NO STRING LONGER THAN 7
+        if($goodname!~/\w/){
+                foreach my $name (sort{$CPD_NLEN{$cpd}{$b}<=>$CPD_NLEN{$cpd}{$a}} keys %{$CPD_NLEN{$cpd}}){
+                        $goodname=$name; last;
+                }
+        }
+
+        #FIX STUPID LONG NON-NAMES
+        if(length($goodname) > 49){
+                $goodname =~ s/\d+[A-Z]\_//g;
+                $goodname =~ s/^[^A-Z]+|[^A-Z]+$//g;
+                while($goodname =~ /\_.{1,2}\_/){$goodname =~ s/\_.{1,2}\_/\_/; if(length($goodname)<7){last;}}
+                $goodname="MOD-".$goodname;
+        }
+
+        $CMPD_NAMES{$cpd}{$goodname}++;
+}
+
+
+
 open(RHNMS, "names.tsv")||die "unable to open names.tsv: $!\n";
 while(<RHNMS>){
         if($_ !~/\w/){next;}
