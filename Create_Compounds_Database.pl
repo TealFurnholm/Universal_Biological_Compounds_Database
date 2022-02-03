@@ -529,7 +529,6 @@ foreach my $id (keys %CMPD_FORMULA){
 
 
 
-
 $on=0;
 print "clean up formula mass and charge\n";
 #CLEAN-UP FORMULA MASSES AND CHARGES
@@ -726,7 +725,7 @@ foreach my $id (keys %CMPD_ALTS){
 }
 
 $tc=keys %CMPD_ALTS;
-print "tc $tc kc $kgc hc $hc ic $ic bc $bc cc $cc pc $pc frmc $frmc masc $masc crgc $crgc namc $namc\n";
+print LOG "tc $tc kc $kgc hc $hc ic $ic bc $bc cc $cc pc $pc frmc $frmc masc $masc crgc $crgc namc $namc\n";
 #tc 797156 kc 1 hc 265346 ic 373465 bc 72699 cc 318564 pc 383252 frmc 625206 masc 618595 crgc 624135 namc 459125
 
 
