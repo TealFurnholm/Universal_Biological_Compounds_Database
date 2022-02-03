@@ -222,10 +222,12 @@ while(<INCHEB>){
 }       }
 
 print "INPUT CHEBI names\n";
-$start=147;
+$start=148;
 $count=0;
-while($count <=10){
+qx{rm -f names.tsv*};
+while($count <=5){
         $count++;
+        qx{rm -f names.tsv};
         $file='https://ftp.ebi.ac.uk/pub/databases/chebi/archive/rel'.$start.'/Flat_file_tab_delimited/names.tsv.gz';
         qx{wget -O names.tsv.gz $file};
         qx{gunzip -f names.tsv.gz};
@@ -236,7 +238,7 @@ while($count <=10){
                 $_=~s/[\r\n]+//;
                 @stuff=split("\t", $_);
                 $cpd="CHEBI:".$stuff[1];
-                $name=CleanNames($stuff[4]);
+                $name=CleanName($stuff[4]);
                 @PARTS = split("_", $name);
                 $mp=0; $mn='';
                 foreach $p (@PARTS){ $p=~/([A-Z]+)/; if(length($1)>$mp){ $mp=length($1); $mn=$1; }}
@@ -246,8 +248,7 @@ while($count <=10){
         $kc=keys %CPD_NODD;
         print "on count $count start $start kc $kc\n";
         $start+=12;
-        qx{rm names.tsv.gz};
-        qx{rm names.tsv};
+        qx{rm -f names.tsv.gz};
 }
 if(keys %CPD_NODD < 1){ 
         $file='https://ftp.ebi.ac.uk/pub/databases/chebi/archive/rel'.$start.'/Flat_file_tab_delimited/names.tsv.gz';
