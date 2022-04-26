@@ -26,7 +26,7 @@ while(<INFILE>){
         if($fold !~ /\w/){next;}
         $down=0;
         if(!-s "BIOCYC_NF/$fold/rxn-list"){$down=1;}
-        #if(!-s "BIOCYC_NF/$fold/enzrxns.dat"){$down=1;}
+        if(!-s "BIOCYC_NF/$fold/enzrxns.dat"){$down=1;}
         if(!-s "BIOCYC_NF/$fold/reactions.dat"){$down=1;}
         if(!-s "BIOCYC_NF/$fold/compounds.dat"){$down=1;}
         #if(!-s "BIOCYC_NF/$fold/protein-links.dat"){$down=1;}
@@ -43,7 +43,7 @@ while(<INFILE>){
                 qx{tar -zxf BIOCYC_NF/$file --keep-newer-files --transform='s|.*\/||' --directory="BIOCYC_NF/$fold" --wildcards "*rxn-list"};
                 qx{tar -zxf BIOCYC_NF/$file --keep-newer-files --transform='s|.*\/||' --directory="BIOCYC_NF/$fold" --wildcards "*protein-seq-ids.dat"};
                 #qx{tar -zxf BIOCYC_NF/$file --keep-newer-files --transform='s|.*\/||' --directory="BIOCYC_NF/$fold" --wildcards "*protein-links.dat"};
-                #qx{tar -zxf BIOCYC_NF/$file --keep-newer-files --transform='s|.*\/||' --directory="BIOCYC_NF/$fold" --wildcards "*enzrxns.dat"};
+                qx{tar -zxf BIOCYC_NF/$file --keep-newer-files --transform='s|.*\/||' --directory="BIOCYC_NF/$fold" --wildcards "*enzrxns.dat"};
                 qx{rm "BIOCYC_NF/$file"};
         }
         if($on%10==0){$time=localtime; print "on $on time $time file $file\n";}
